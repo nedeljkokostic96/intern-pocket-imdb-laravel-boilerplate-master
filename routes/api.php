@@ -25,3 +25,5 @@ Route::group([
 });
 
 Route::apiResource('movies', 'Api\MovieController');
+
+Route::get('movies/like/{title}', 'Api\MovieController@getMoviesLike');

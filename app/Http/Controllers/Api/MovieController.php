@@ -8,6 +8,12 @@ use App\Movie;
 
 class MovieController extends Controller
 {
+
+    function getMoviesLike($title='')
+    {
+        return Movie::where('title', 'like', $title . '%')->orderBy('id', 'asc')->get();
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -15,7 +21,7 @@ class MovieController extends Controller
      */
     public function index()
     {
-        return Movie::all();
+        return Movie::paginate(10);
     }
 
     /**
@@ -37,7 +43,7 @@ class MovieController extends Controller
      */
     public function show($id)
     {
-        //
+        return Movie::find($id);
     }
 
     /**
