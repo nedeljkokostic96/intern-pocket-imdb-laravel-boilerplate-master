@@ -4,14 +4,15 @@ namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Collection;
 use App\Movie;
 
 class MovieController extends Controller
 {
 
-    function getMoviesLike($title='')
+    public function getMoviesLike($title='')
     {
-        return Movie::where('title', 'like', $title . '%')->orderBy('id', 'asc')->get();
+        return Movie::where('title', 'like', $title . '%')->with('genre', 'likes')->orderBy('id', 'asc')->get();
     }
 
     /**
@@ -21,9 +22,8 @@ class MovieController extends Controller
      */
     public function index()
     {
-        return Movie::paginate(10);
+        return Movie::with('genre', 'likes')->paginate(10);
     }
-
     /**
      * Store a newly created resource in storage.
      *
@@ -43,7 +43,7 @@ class MovieController extends Controller
      */
     public function show($id)
     {
-        return Movie::find($id);
+        return Movie::whereIn('id', [$id])->with('genre', 'likes')->get();
     }
 
     /**
