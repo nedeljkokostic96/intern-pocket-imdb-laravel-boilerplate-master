@@ -12,6 +12,14 @@ use DB;
 
 class MovieController extends Controller
 {
+    public function getRelatedMovies($movieId)
+    {
+        $movie = Movie::find($movieId);
+        return Movie::where('genre_id', '=', $movie->genre_id)
+                    ->where('id', '<>', $movie->id)
+                    ->limit(10)
+                    ->get();
+    }
 
     public function getHotestMovies($numOfHotest)
     {
@@ -38,6 +46,7 @@ class MovieController extends Controller
     public function getMoviesByGenre($genreId)
     {
         return Movie::where('genre_id', '=', $genreId)->with('genre', 'likes')->get();
+        
     }
 
     public function incrementMovieViews($id) 

@@ -30,6 +30,7 @@ Route::get('movies/like/{title}', 'Api\MovieController@getMoviesLike');
 Route::put('movies/views/{movie}', 'Api\MovieController@incrementMovieViews');
 Route::get('movies/genre/{genre}', 'Api\MovieController@getMoviesByGenre');
 Route::get('movies/hotest/{numOfHotest}', 'Api\MovieController@getHotestMovies');
+Route::get('movies/related/{movie}', 'Api\MovieController@getRelatedMovies');
 
 Route::apiResource('likes', 'Api\LikeController');
 Route::get('likes/movie/{movieId}', 'Api\LikeController@getAllReactionsForMovie');
