@@ -8,9 +8,32 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 use App\Movie;
+use DB;
 
 class MovieController extends Controller
 {
+
+    public function getHotestMovies($numOfHotest)
+    {
+        $movies = Movie::with('genre', 'likes')->get();
+        $moviesMapped = [];
+        foreach ($movies as $movie) {
+            $likesCounter = 0;
+            foreach ($movie->likes as $like){
+                $like->liked ? $likesCounter++ : $likesCounter;
+            }
+            $mapped = [
+                'likes' => $likesCounter,
+                'movie' => $movie
+            ];
+            $moviesMapped[] = $mapped;
+        }
+        usort($moviesMapped, function($a, $b) {
+            return $b["likes"] - $a["likes"];
+        });
+        return array_slice($moviesMapped, 0, $numOfHotest);
+    }
+
 
     public function getMoviesByGenre($genreId)
     {
