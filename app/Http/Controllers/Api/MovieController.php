@@ -14,7 +14,7 @@ class MovieController extends Controller
 
     public function getMoviesByGenre($genreId)
     {
-        return Movie::where('genre_id', '=', $genreId)->with('genre', 'likes')->paginate(10);
+        return Movie::where('genre_id', '=', $genreId)->with('genre', 'likes')->get();
     }
 
     public function incrementMovieViews($id) 

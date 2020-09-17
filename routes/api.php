@@ -34,3 +34,6 @@ Route::apiResource('likes', 'Api\LikeController');
 Route::get('likes/movie/{movieId}', 'Api\LikeController@getAllReactionsForMovie');
 
 Route::apiResource('genres', 'Api\GenreController');
+
+Route::apiResource('comments', 'Api\CommentController');
+Route::get('comments/movie/{movie}', 'Api\CommentController@getCommentsByMovieId');
