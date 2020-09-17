@@ -27,8 +27,10 @@ Route::group([
 Route::apiResource('movies', 'Api\MovieController');
 
 Route::get('movies/like/{title}', 'Api\MovieController@getMoviesLike');
-Route::put('movies/views/{id}', 'Api\MovieController@incrementMovieViews');
+Route::put('movies/views/{movie}', 'Api\MovieController@incrementMovieViews');
+Route::get('movies/genre/{genre}', 'Api\MovieController@getMoviesByGenre');
 
 Route::apiResource('likes', 'Api\LikeController');
-
 Route::get('likes/movie/{movieId}', 'Api\LikeController@getAllReactionsForMovie');
+
+Route::apiResource('genres', 'Api\GenreController');

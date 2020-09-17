@@ -12,8 +12,13 @@ use App\Movie;
 class MovieController extends Controller
 {
 
+    public function getMoviesByGenre($genreId)
+    {
+        return Movie::where('genre_id', '=', $genreId)->with('genre', 'likes')->paginate(10);
+    }
 
-    public function incrementMovieViews($id) {
+    public function incrementMovieViews($id) 
+    {
         $movie = Movie::find($id);
         $movie->views = $movie->views + 1;
         if ($movie->save()) {
