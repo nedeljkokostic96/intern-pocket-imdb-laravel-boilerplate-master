@@ -77,7 +77,7 @@ class MovieController extends Controller
      */
     public function index()
     {
-        return Movie::with('genre', 'likes')->paginate(10);
+        return Movie::with('genre', 'likes', 'watchLists')->paginate(10);
     }
     /**
      * Store a newly created resource in storage.

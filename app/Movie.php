@@ -20,4 +20,9 @@ class Movie extends Model
     {
         return $this->belongsTo('App\Genre', 'genre_id', 'id')->withDefault();
     }
+
+    public function watchLists()
+    {
+        return $this->hasMany(WatchList::class);
+    }
 }

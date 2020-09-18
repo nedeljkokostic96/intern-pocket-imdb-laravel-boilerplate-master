@@ -30,7 +30,9 @@ class AlterCommentsTableAddMovieIdField extends Migration
      */
     public function down()
     {
-        $table->dropForeign(['movie_id']);
-        $table->dropColumn('movie_id');
+        Schema::table('comments', function(Blueprint $table){
+            $table->dropForeign(['movie_id']);
+            $table->dropColumn('movie_id');
+        });
     }
 }

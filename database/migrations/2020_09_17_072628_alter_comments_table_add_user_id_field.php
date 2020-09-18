@@ -30,7 +30,9 @@ class AlterCommentsTableAddUserIdField extends Migration
      */
     public function down()
     {
-        $table->dropForeign(['user_id']);
-        $table->dropColumn('user_id');
+        Schema::table('comments', function(Blueprint $table){
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
+        });
     }
 }

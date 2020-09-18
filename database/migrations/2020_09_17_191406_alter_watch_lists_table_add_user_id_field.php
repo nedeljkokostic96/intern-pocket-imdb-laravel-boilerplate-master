@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AlterLikesTableAddMovieIdField extends Migration
+class AlterWatchListsTableAddUserIdField extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class AlterLikesTableAddMovieIdField extends Migration
      */
     public function up()
     {
-        Schema::table('likes', function(Blueprint $table){
-            $table->integer('movie_id')->unsigned()->nullable();
+        Schema::table('watch_lists', function(Blueprint $table){
+            $table->integer('user_id')->unsigned()->nullable();
 
-            $table->foreign('movie_id')
+            $table->foreign('user_id')
                 ->references('id')
-                ->on('movies')
+                ->on('users')
                 ->onDelete('set null');
         });
     }
@@ -30,10 +30,9 @@ class AlterLikesTableAddMovieIdField extends Migration
      */
     public function down()
     {
-
-        Schema::table('likes', function(Blueprint $table){
-            $table->dropForeign(['movie_id']);
-            $table->dropColumn('movie_id');
+        Schema::table('watch_lists', function(Blueprint $table){
+            $table->dropForeign(['user_id']);
+            $table->dropColumn('user_id');
         });
     }
 }

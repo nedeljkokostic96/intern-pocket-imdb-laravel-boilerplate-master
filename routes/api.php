@@ -39,3 +39,8 @@ Route::apiResource('genres', 'Api\GenreController');
 
 Route::apiResource('comments', 'Api\CommentController');
 Route::get('comments/movie/{movie}', 'Api\CommentController@getCommentsByMovieId');
+
+//Route::get('watchlist', 'Api\WatchListController@getUserWatchList');
+
+Route::apiResource('watchlists', 'Api\WatchListController');
+Route::get('user', 'Api\UserController@getCurrentUser');
