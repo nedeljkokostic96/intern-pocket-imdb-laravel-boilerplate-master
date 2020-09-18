@@ -87,7 +87,22 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Log::alert($request);
+        $movie = new Movie();
+        $movie->title = $request->title;
+        $movie->description = $request->description;
+        $movie->image_url = $request->image_url;
+        $movie->genre_id = $request->genre_id;
+        if ($movie->save()) {
+            return json_encode([
+                'status' => true,
+                'message' => 'New movie added!'
+            ]);
+        }
+        return json_encode([
+            'status' => false,
+            'message' => 'Movie not added!'
+        ]);
     }
 
     /**
