@@ -6,9 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
-
+use Illuminate\Support\Facades\Mail;
 use App\Movie;
 use App\Genre;
+use App\Mail\MovieCreated;
 use DB;
 
 class MovieController extends Controller
@@ -103,11 +104,13 @@ class MovieController extends Controller
             }else {
                 $genre = new Genre();
                 $genre->name = $request->genre;
-                $saved = $genre->save();
+                $genre->save();
+                $saved = Genre::where('name', '=', $genre->name);
                 $movie->genre_id = $saved->id;
             }
         }
         if ($movie->save()) {
+            Mail::to('example@example.com')->send(new MovieCreated($movie));
             return json_encode([
                 'status' => true,
                 'message' => 'New movie added!'
