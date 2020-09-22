@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Mail;
 use App\Movie;
 use App\Genre;
 use App\Mail\MovieCreated;
+use App\Jobs\SendEmail;
 use DB;
 
 class MovieController extends Controller
@@ -89,7 +90,6 @@ class MovieController extends Controller
      */
     public function store(Request $request)
     {
-        Log::alert($request);
         $movie = new Movie();
         $movie->title = $request->title;
         $movie->description = $request->description;
@@ -99,18 +99,20 @@ class MovieController extends Controller
         } else {
             $genre = Genre::where('name', '=', $request->genre)->limit(1)->get();
             if ($genre && count($genre) === 1) {
-                Log::alert($genre);
                 $movie->genre_id = $genre[0]->id;
             }else {
                 $genre = new Genre();
                 $genre->name = $request->genre;
                 $genre->save();
-                $saved = Genre::where('name', '=', $genre->name);
-                $movie->genre_id = $saved->id;
+                $saved = Genre::where('name', '=', $genre->name)->get();
+                Log::alert('GENRE');
+                Log::alert(json_encode($saved));
+                $movie->genre_id = $saved[0]->id;
             }
         }
         if ($movie->save()) {
-            Mail::to('example@example.com')->send(new MovieCreated($movie));
+            //Mail::to('example@example.com')->send(new MovieCreated($movie)); //previous task
+            dispatch(new SendEmail($movie));
             return json_encode([
                 'status' => true,
                 'message' => 'New movie added!'
