@@ -40,19 +40,21 @@ class WatchListController extends Controller
     {
         $user = Auth::user();
         $watch = new WatchList();
-        $watch->movie_id = $request->movieId;
-        $watch->user_id = $user->id;
-        $watch->watched = false;
-        if ($watch->save()){
-            return json_encode([
-                'status' => true,
-                'message' => 'Watch added!'
-            ]);
+        if ($this->checkIfWatchExists($user->id, $request->movieId)) {
+            $watch->movie_id = $request->movieId;
+            $watch->user_id = $user->id;
+            $watch->watched = false;
+            $watch->save();
         }
-        return json_encode([
-            'status' => false,
-            'message' => 'Not added!'
-        ]);
+        return $this->index();
+
+    }
+
+    private function checkIfWatchExists($user_id, $movie_id){
+        $watches = WatchList::where('user_id', '=', $user_id)
+                            ->where('movie_id', '=', $movie_id)
+                            ->get();
+        return count($watches) === 0;
     }
 
     /**
@@ -88,16 +90,8 @@ class WatchListController extends Controller
     {
         $watch = WatchList::find($id);
         $watch->watched = true;
-        if ($watch->save()){
-            return json_encode([
-                'status' => true,
-                'message' => 'Marked as watched!'
-            ]);
-        }
-        return json_encode([
-            'status' => false,
-            'message' => 'Not marked as watched!'
-        ]);
+        $watch->save();
+        return $this->index();
     }
 
     /**
@@ -109,15 +103,9 @@ class WatchListController extends Controller
     public function destroy($id)
     {
         $watch = WatchList::find($id);
-        if ($watch->delete()){
-            return json_encode([
-                'status' => true,
-                'message' => 'Deleted!'
-            ]);
+        if ($watch){
+            $watch->delete();
         }
-        return json_encode([
-            'status' => false,
-            'message' => 'Not deleted!'
-        ]);
+        return $this->index();
     }
 }

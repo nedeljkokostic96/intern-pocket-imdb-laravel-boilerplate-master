@@ -60,12 +60,12 @@ class LikeController extends Controller
         if (!$like->save()) {
             return json_encode([
                 'status' => false,
-                'message' => 'Cannot add like!'
+                'Message' => 'Cannot add like!'
             ]);
         }
         return json_encode([
             'status' => true,
-            'message' => 'Movie liked!'
+            'like' => $like
         ]);
     }
 

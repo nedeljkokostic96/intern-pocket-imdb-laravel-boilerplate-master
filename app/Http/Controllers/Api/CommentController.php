@@ -54,16 +54,10 @@ class CommentController extends Controller
         $comment->body = $request->commentBody;
         $comment->movie_id = $request->movieId;
         $comment->user_id = $user->id;
-        if (!$comment->save()) {
-            return json_encode([
-                'status' => false,
-                'message' => 'Cannot add comment!'
-            ]);
+        if ($comment->save()) {
+            return $comment;
         }
-        return json_encode([
-            'status' => true,
-            'message' => 'Comment added!'
-        ]);
+        return null;
     }
 
     /**

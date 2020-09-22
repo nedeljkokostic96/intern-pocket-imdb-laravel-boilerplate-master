@@ -8,6 +8,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 
 use App\Movie;
+use App\Genre;
 use DB;
 
 class MovieController extends Controller
@@ -92,7 +93,20 @@ class MovieController extends Controller
         $movie->title = $request->title;
         $movie->description = $request->description;
         $movie->image_url = $request->image_url;
-        $movie->genre_id = $request->genre_id;
+        if ($request->genre_id) {
+            $movie->genre_id = $request->genre_id;
+        } else {
+            $genre = Genre::where('name', '=', $request->genre)->limit(1)->get();
+            if ($genre && count($genre) === 1) {
+                Log::alert($genre);
+                $movie->genre_id = $genre[0]->id;
+            }else {
+                $genre = new Genre();
+                $genre->name = $request->genre;
+                $saved = $genre->save();
+                $movie->genre_id = $saved->id;
+            }
+        }
         if ($movie->save()) {
             return json_encode([
                 'status' => true,
