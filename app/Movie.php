@@ -25,4 +25,9 @@ class Movie extends Model
     {
         return $this->hasMany(WatchList::class);
     }
+
+    public function image()
+    {
+        return $this->hasOne(Image::class);
+    }
 }
